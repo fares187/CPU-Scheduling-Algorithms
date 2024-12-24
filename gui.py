@@ -149,6 +149,47 @@ def create_window():
 
 
         ############################################################################################################################
+        #---------------------------------------------------------------------------->
+        game_frame = Frame(new_window)
+        game_frame.pack()
+
+        my_game = ttk.Treeview(game_frame)
+
+        my_game['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city')
+
+        my_game.column("P#", width=0,  stretch=ttk.NO)
+        my_game.column("AT",anchor=ttk.CENTER, width=80)
+        my_game.column("BT",anchor=ttk.CENTER,width=80)
+        my_game.column("ST",anchor=ttk.CENTER,width=80)
+        my_game.column("CT",anchor=ttk.CENTER,width=80)
+        my_game.column("TAT",anchor=ttk.CENTER,width=80)#
+        my_game.column("WT",anchor=ttk.CENTER,width=80)
+        my_game.column("RT",anchor=ttk.CENTER,width=80)
+
+        my_game.heading("P#",text="P#",anchor=ttk.CENTER)
+        my_game.heading("AT",text="AT",anchor=ttk.CENTER)
+        my_game.heading("BT",text="BT",anchor=ttk.CENTER)
+        my_game.heading("ST",text="ST",anchor=ttk.CENTER)
+        my_game.heading("CT",text="CT",anchor=ttk.CENTER)
+        my_game.heading("TAT",text="TAT",anchor=ttk.CENTER)
+        my_game.heading("WT",text="WT",anchor=ttk.CENTER)
+        my_game.heading("RT",text="RT",anchor=ttk.CENTER)
+
+        my_game.insert(parent='',index='end',iid=0,text='',
+        values=("P#","AT","BT","ST", "CT","TAT","WT","RT"))
+        # my_game.insert(parent='',index='end',iid=1,text='',
+        # values=('2','Ranger','102','Wisconsin', 'Green Bay'))
+        # my_game.insert(parent='',index='end',iid=2,text='',
+        # values=('3','Deamon','103', 'California', 'Placentia'))
+        # my_game.insert(parent='',index='end',iid=3,text='',
+        # values=('4','Dragon','104','New York' , 'White Plains'))
+        # my_game.insert(parent='',index='end',iid=4,text='',
+        # values=('5','CrissCross','105','California', 'San Diego'))
+        # my_game.insert(parent='',index='end',iid=5,text='',
+        # values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
+
+        my_game.pack()
+        #---------------------------------------------------------------------------->
         # Headers
         headers = ["Process ID", "Arrival Time", "Burst Time"]
         if "Priority" in algo_details[0]:
