@@ -1,10 +1,10 @@
 class Process:
-    def __init__(self,p_id,arrival_time,burst_time):
+    def __init__(self,p_id,arrival_time,burst_time,runs=None):
         self.p_id=p_id
         self.arrival_time=arrival_time
         self.burst_time=burst_time
         self.priority=None
-        self.runs=[]
+        self.runs=runs if runs else []
         self.response_time=None
         self.waiting_time=None
         self.turnaround_time=None
@@ -14,4 +14,3 @@ class Process:
     
 if __name__=='__main__':
     processes=[Process('p1',0,8),Process('p2',1,4),Process('p3',1,9),Process('p4',3,5)]
-    

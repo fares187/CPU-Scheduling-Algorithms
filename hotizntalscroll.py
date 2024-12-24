@@ -1,5 +1,14 @@
 from tkinter import *
 from random import randint, choice
+from process import Process
+from algorithms import Algorithms
+Sfactor=2
+processes = [
+   Process(1, 0, 5, runs=[[1, 4],[12, 16]]),
+   Process(2, 1, 3, runs=[[5, 6]]),
+   Process(3, 2, 4, runs=[[7, 10]])
+]
+print(Algorithms(processes).sort_runtimes())
 
 root = Tk()
 root.geometry("1000x600")
@@ -20,7 +29,7 @@ main_frame.pack(expand=True, padx=10, pady=10,anchor="n")
 # main_frame.grid(row=1,column=1,sticky="nsew")
 # secondry_frame.grid(row=2,column=1,rowspan=1000,sticky="nsew")
 # Create a canvas
-canvas = Canvas(main_frame, width=1000, height=40)
+canvas = Canvas(main_frame, width=1000000, height=40)
 
 # Create horizontal scrollbar
 scrollbar = Scrollbar(main_frame, orient='horizontal', command=canvas.xview)
@@ -39,15 +48,82 @@ canvas.create_window((0, 0), window=inner_frame, anchor='nw')
 sample_texts = [f"Label {i}" for i in range(1, 21)]
 labels = []
 
-for i, text in enumerate(sample_texts):
-    mm=randint(5,30)
-    inner_frame.columnconfigure(i,weight=mm)
-    label = Label(inner_frame,width= mm,
-                        background= choice(["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]),
-                        height=2, text=mm)
+# for i, text in enumerate(sample_texts):
+#     mm=randint(5,30)
+#     inner_frame.columnconfigure(i,weight=mm)
+#     label = Label(inner_frame,width= mm,
+#                         background= choice(["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]),
+#                         height=2, text=mm)
+#     # label.pack(side="right")
+#     label.grid(column=mm,row=0)
+#     labels.append(label)
+####################################################################3
+# kturn =-1
+# for i in range((max(end_time for p in processes for start_time, end_time in p.runs))+1):
+#     if(kturn>i):
+#         continue
+    
+#     for p in Algorithms(processes).sort_runtimes():
+#         if(i==p[1][0]):
+#             inner_frame.columnconfigure(i,weight=(p[1][1]-p[1][0]))
+#             kturn=p[1][1]
+#             label = Label(inner_frame,width= (p[1][1]-p[1][0]),
+#                         background= choice(["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]),
+#                         height=2, text="p"+str(p[0]))
+#             inner_frame.columnconfigure(i,weight=(p[1][1]-p[1][0]))
+#             label.grid(column=i,row=0,sticky="ew")
+#             labels.append(label)
+#             continue
+    
+#     inner_frame.columnconfigure(i,weight=1)
+#     label = Label(inner_frame,width= (1),
+#                         background= "#FFFFFF",
+#                         height=2, text=" ")
+#     inner_frame.columnconfigure(i,weight=1)
+#     label.grid(column=i,row=0,sticky="ew")
+#     labels.append(label)
+#####################################################################################################333
+
+kturn =-1
+for i in range((max(end_time for p in processes for start_time, end_time in p.runs))+1):
+    if(kturn>i):
+        continue
+    try:
+        for p in Algorithms(processes).sort_runtimes():
+            if(i==p[1][0]):
+                inner_frame.columnconfigure(i,weight=(p[1][1]-p[1][0]))
+                kturn=p[1][1]+1
+                label = Label(inner_frame,width= (p[1][1]-p[1][0]),
+                            background= choice(["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]),
+                            height=2, text="p"+str(p[0]))
+                inner_frame.columnconfigure(i,weight=1+(p[1][1]-p[1][0]))
+                label.grid(column=i,row=0,sticky="ew")
+                labels.append(label)
+                raise "asdfasdf"
+        
+        inner_frame.columnconfigure(i,weight=1)
+        label = Label(inner_frame,width= (1),
+                            background= "#FFFFFF",
+                            height=2, text=" ")
+        inner_frame.columnconfigure(i,weight=1)
+        label.grid(column=i,row=0,sticky="ew")
+        labels.append(label)
+    except Exception:
+        continue
+
+
+
+
+
+
+
+
+
+
+
+
     # label.pack(side="right")
-    label.grid(column=mm,row=0)
-    labels.append(label)
+    
 
 # Update scroll region after adding labels
 inner_frame.update_idletasks()
