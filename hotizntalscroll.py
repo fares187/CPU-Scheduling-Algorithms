@@ -2,7 +2,8 @@ from tkinter import *
 from random import randint, choice
 from process import Process
 from algorithms import Algorithms
-Sfactor=2
+Sfactor=6
+colors =["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]
 processes = [
    Process(1, 0, 5, runs=[[1, 4],[12, 16]]),
    Process(2, 1, 3, runs=[[5, 6]]),
@@ -85,28 +86,32 @@ labels = []
 #####################################################################################################333
 
 kturn =-1
-for i in range((max(end_time for p in processes for start_time, end_time in p.runs))+1):
+chooosed="#D19B26"
+for i in range((max(end_time for p in processes for start_time, end_time in p.runs)+1)*Sfactor):
     if(kturn>i):
         continue
     try:
         for p in Algorithms(processes).sort_runtimes():
-            if(i==p[1][0]):
-                inner_frame.columnconfigure(i,weight=(p[1][1]-p[1][0]))
-                kturn=p[1][1]+1
-                label = Label(inner_frame,width= (p[1][1]-p[1][0]),
-                            background= choice(["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]),
+            if(i==p[1][0] *Sfactor   ):
+                
+                chooosed=choice([m for m in colors if m!=chooosed])
+               # inner_frame.columnconfigure(i  ,weight=(p[1][1]-p[1][0])  *Sfactor )
+                kturn=(p[1][1]+1)*Sfactor
+                label = Label(inner_frame,width= (p[1][1]-p[1][0]) *Sfactor  ,
+                            background=chooosed,
                             height=2, text="p"+str(p[0]))
-                inner_frame.columnconfigure(i,weight=1+(p[1][1]-p[1][0]))
-                label.grid(column=i,row=0,sticky="ew")
+                inner_frame.columnconfigure(i     ,weight=(1+(p[1][1]-p[1][0])) *Sfactor  )
+                label.grid(column=i   *Sfactor,row=0,sticky="ew")
                 labels.append(label)
+                
                 raise "asdfasdf"
         
-        inner_frame.columnconfigure(i,weight=1)
-        label = Label(inner_frame,width= (1),
+        #inner_frame.columnconfigure(i  *Sfactor,weight=1*Sfactor    )
+        label = Label(inner_frame,width= (1)   *(Sfactor),
                             background= "#FFFFFF",
-                            height=2, text=" ")
-        inner_frame.columnconfigure(i,weight=1)
-        label.grid(column=i,row=0,sticky="ew")
+                            height=2, text="")
+        inner_frame.columnconfigure(i    ,weight=1   *(Sfactor) )
+        label.grid(column=i  *(Sfactor),row=0,sticky="ew")
         labels.append(label)
     except Exception:
         continue
