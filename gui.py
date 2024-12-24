@@ -1,4 +1,36 @@
+from tkinter import Tk, Label, StringVar, OptionMenu, Button, Toplevel, Entry, Frame, PhotoImage, messagebox
+from algorithms import Algorithms
+from process import Process
+        
+def create_process_objects():
+    """Create a list of Process objects from the GUI input"""
+    processes = []
+    is_priority = "Priority" in selected_option.get()
+    
+    for i, row in enumerate(process_rows):
+        p_id = f"P{i+1}"
+        arrival_time = int(row[2].get())
+        burst_time = int(row[1].get())
+        
+        if is_priority:
+            priority = int(row[3].get())
+            process = Process(p_id, arrival_time, burst_time, priority)
+        else:
+            process = Process(p_id, arrival_time, burst_time)
+            
+        processes.append(process)
+    
+    return processes
 
+<<<<<<< HEAD
+def get_algorithm_details():
+    """Get algorithm name and quantum value if applicable"""
+    algo_name = selected_option.get()
+    if "Round Robin" in algo_name:
+        return [algo_name, int(quantum_entry.get())]
+    return [algo_name, None]
+
+=======
 from tkinter import Tk, Label, StringVar, OptionMenu, Button, Toplevel, Entry, Frame, PhotoImage, messagebox
 import tkinter as ttk
 from algorithms import Algorithms
@@ -41,17 +73,43 @@ def get_algorithm_details():
         return [algo_name, int(quantum_entry.get())]
     return [algo_name, None]
 
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
 def create_window():
     if validate_inputs():
         # Create the tuple with algorithm details and process objects
         algo_details = get_algorithm_details()
         processes = create_process_objects()
+<<<<<<< HEAD
+
+        algo=Algorithms()
+        match algo_details[0]:
+            case "First Come First Served (FCFS)":
+                processes=algo.fcfs(processes)
+            case "Non-Preemptive Shortest Job First (SJF)":
+                processes=algo.sjf_nonpreemptive(processes)
+            case "Preemptive Shortest Job First (SJF)":
+                processes=algo.sjf_preemptive(processes)
+            case "Round Robin (RR)":
+                processes=algo.round_robin(processes, algo_details[1])
+            case "Preemptive Priority Scheduling":
+                processes=algo.priority_non_preemptive(processes)
+            case "Non-Preemptive Priority Scheduling":
+                processes=algo.premptive_priority(processes)
+        
+        print(algo.sort_runtimes(processes))
+        
+=======
         print(processes)
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
         # Create new window to display the created objects
         new_window = Toplevel(window)
         new_window.geometry("600x400")
         new_window.title("Process Details")
+<<<<<<< HEAD
+        
+=======
        
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
         # Display algorithm details
         Label(new_window, text="Algorithm Details:", font=("Verdana", 16, "bold")).pack(pady=10)
         Label(new_window, text=f"Algorithm: {algo_details[0]}", font=("Verdana", 12)).pack()
@@ -62,6 +120,9 @@ def create_window():
         Label(new_window, text="\nProcess Objects:", font=("Verdana", 16, "bold")).pack(pady=10)
         process_frame = Frame(new_window)
         process_frame.pack(padx=20, pady=10)
+<<<<<<< HEAD
+        
+=======
         ############################################################################################################################333
         Sfactor=6
         colors =["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]
@@ -149,47 +210,6 @@ def create_window():
 
 
         ############################################################################################################################
-        #---------------------------------------------------------------------------->
-        game_frame = Frame(new_window)
-        game_frame.pack()
-
-        my_game = ttk.Treeview(game_frame)
-
-        my_game['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city')
-
-        my_game.column("P#", width=0,  stretch=ttk.NO)
-        my_game.column("AT",anchor=ttk.CENTER, width=80)
-        my_game.column("BT",anchor=ttk.CENTER,width=80)
-        my_game.column("ST",anchor=ttk.CENTER,width=80)
-        my_game.column("CT",anchor=ttk.CENTER,width=80)
-        my_game.column("TAT",anchor=ttk.CENTER,width=80)#
-        my_game.column("WT",anchor=ttk.CENTER,width=80)
-        my_game.column("RT",anchor=ttk.CENTER,width=80)
-
-        my_game.heading("P#",text="P#",anchor=ttk.CENTER)
-        my_game.heading("AT",text="AT",anchor=ttk.CENTER)
-        my_game.heading("BT",text="BT",anchor=ttk.CENTER)
-        my_game.heading("ST",text="ST",anchor=ttk.CENTER)
-        my_game.heading("CT",text="CT",anchor=ttk.CENTER)
-        my_game.heading("TAT",text="TAT",anchor=ttk.CENTER)
-        my_game.heading("WT",text="WT",anchor=ttk.CENTER)
-        my_game.heading("RT",text="RT",anchor=ttk.CENTER)
-
-        my_game.insert(parent='',index='end',iid=0,text='',
-        values=("P#","AT","BT","ST", "CT","TAT","WT","RT"))
-        # my_game.insert(parent='',index='end',iid=1,text='',
-        # values=('2','Ranger','102','Wisconsin', 'Green Bay'))
-        # my_game.insert(parent='',index='end',iid=2,text='',
-        # values=('3','Deamon','103', 'California', 'Placentia'))
-        # my_game.insert(parent='',index='end',iid=3,text='',
-        # values=('4','Dragon','104','New York' , 'White Plains'))
-        # my_game.insert(parent='',index='end',iid=4,text='',
-        # values=('5','CrissCross','105','California', 'San Diego'))
-        # my_game.insert(parent='',index='end',iid=5,text='',
-        # values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
-
-        my_game.pack()
-        #---------------------------------------------------------------------------->
         # Headers
         headers = ["Process ID", "Arrival Time", "Burst Time"]
         if "Priority" in algo_details[0]:
@@ -450,6 +470,9 @@ btn.pack(pady=20)
 # Run the application
 window.mainloop()
 
+<<<<<<< HEAD
+print()
+=======
 print()
 
 
@@ -590,3 +613,4 @@ print()
 # # Driver Code
 # app = tkinterApp()
 # app.mainloop()
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
