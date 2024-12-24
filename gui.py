@@ -22,6 +22,7 @@ def create_process_objects():
     
     return processes
 
+<<<<<<< HEAD
 def get_algorithm_details():
     """Get algorithm name and quantum value if applicable"""
     algo_name = selected_option.get()
@@ -29,11 +30,56 @@ def get_algorithm_details():
         return [algo_name, int(quantum_entry.get())]
     return [algo_name, None]
 
+=======
+from tkinter import Tk, Label, StringVar, OptionMenu, Button, Toplevel, Entry, Frame, PhotoImage, messagebox
+import tkinter as ttk
+from algorithms import Algorithms
+from random import randint, choice
+class Process:
+    def __init__(self, p_id, arrival_time, burst_time, priority=None):
+        self.p_id = p_id
+        self.arrival_time = arrival_time
+        self.burst_time = burst_time
+        self.priority = priority
+        self.runs = []
+        self.response_time = None
+        self.waiting_time = None
+        self.turnaround_time = None
+        
+def create_process_objects():
+    """Create a list of Process objects from the GUI input"""
+    processes = []
+    is_priority = "Priority" in selected_option.get()
+    
+    for i, row in enumerate(process_rows):
+        p_id = f"P{i+1}"
+        arrival_time = int(row[2].get())
+        burst_time = int(row[1].get())
+        
+        if is_priority:
+            priority = int(row[3].get())
+            process = Process(p_id, arrival_time, burst_time, priority)
+        else:
+            process = Process(p_id, arrival_time, burst_time)
+            
+        processes.append(process)
+    
+    return processes
+
+def get_algorithm_details():
+    """Get algorithm name and quantum value if applicable"""
+    algo_name = selected_option.get()
+    if "Round Robin" in algo_name:
+        return [algo_name, int(quantum_entry.get())]
+    return [algo_name, None]
+
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
 def create_window():
     if validate_inputs():
         # Create the tuple with algorithm details and process objects
         algo_details = get_algorithm_details()
         processes = create_process_objects()
+<<<<<<< HEAD
 
         algo=Algorithms()
         match algo_details[0]:
@@ -52,11 +98,18 @@ def create_window():
         
         print(algo.sort_runtimes(processes))
         
+=======
+        print(processes)
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
         # Create new window to display the created objects
         new_window = Toplevel(window)
         new_window.geometry("600x400")
         new_window.title("Process Details")
+<<<<<<< HEAD
         
+=======
+       
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
         # Display algorithm details
         Label(new_window, text="Algorithm Details:", font=("Verdana", 16, "bold")).pack(pady=10)
         Label(new_window, text=f"Algorithm: {algo_details[0]}", font=("Verdana", 12)).pack()
@@ -67,7 +120,97 @@ def create_window():
         Label(new_window, text="\nProcess Objects:", font=("Verdana", 16, "bold")).pack(pady=10)
         process_frame = Frame(new_window)
         process_frame.pack(padx=20, pady=10)
+<<<<<<< HEAD
         
+=======
+        ############################################################################################################################333
+        Sfactor=6
+        colors =["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]
+
+        spacing_Frame=Frame(new_window,width=100,height=100)
+        main_frame = Frame(new_window, bg="#FF0000",height=40,width=1000)
+        secondry_frame= Frame(new_window,bg="red")
+        # Create main frame
+
+
+        main_frame.pack(expand=True, padx=10, pady=10,anchor="n")
+        # spacing_Frame.grid(row=0,column=1,sticky="nsew")
+        # main_frame.grid(row=1,column=1,sticky="nsew")
+        # secondry_frame.grid(row=2,column=1,rowspan=1000,sticky="nsew")
+        # Create a canvas
+        canvas = ttk.Canvas(main_frame, width=1000000, height=40)
+
+        # Create horizontal scrollbar
+        scrollbar = ttk.Scrollbar(main_frame, orient='horizontal', command=canvas.xview)
+        scrollbar.pack(side='bottom', fill='x')
+
+        # Configure canvas
+        canvas.configure(xscrollcommand=scrollbar.set)
+        canvas.pack(expand=True, fill='both')
+
+        # Create frame inside canvas to hold labels
+        inner_frame = Frame(canvas)
+        inner_frame.rowconfigure(0,weight=1)
+        canvas.create_window((0, 0), window=inner_frame, anchor='nw')
+
+        # Add some sample labels
+        sample_texts = [f"Label {i}" for i in range(1, 21)]
+        labels = []
+        
+        kturn =-1
+        chooosed="#D19B26"
+        for i in range((max(end_time for p in processes for start_time, end_time in p.runs)+1)*Sfactor):
+            if(kturn>i):
+                continue
+            try:
+                for p in Algorithms(processes).sort_runtimes():
+                    if(i==p[1][0] *Sfactor   ):
+                        
+                        chooosed=choice([m for m in colors if m!=chooosed])
+                    # inner_frame.columnconfigure(i  ,weight=(p[1][1]-p[1][0])  *Sfactor )
+                        kturn=(p[1][1]+1)*Sfactor
+                        label = Label(inner_frame,width= (p[1][1]-p[1][0]) *Sfactor  ,
+                                    background=chooosed,
+                                    height=2, text="p"+str(p[0]))
+                        inner_frame.columnconfigure(i     ,weight=(1+(p[1][1]-p[1][0])) *Sfactor  )
+                        label.grid(column=i   *Sfactor,row=0,sticky="ew")
+                        labels.append(label)
+                        
+                        raise "asdfasdf"
+                
+                #inner_frame.columnconfigure(i  *Sfactor,weight=1*Sfactor    )
+                label = Label(inner_frame,width= (1)   *(Sfactor),
+                                    background= "#FFFFFF",
+                                    height=2, text="")
+                inner_frame.columnconfigure(i    ,weight=1   *(Sfactor) )
+                label.grid(column=i  *(Sfactor),row=0,sticky="ew")
+                labels.append(label)
+            except Exception:
+                continue
+
+
+
+            # label.pack(side="right")
+            
+
+        # Update scroll region after adding labels
+        inner_frame.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox('all'))
+
+        def on_mousewheel(event):
+        # Shift + MouseWheel for horizontal scrolling
+            if event.state == 1:  # Shift is being held
+                canvas.xview_scroll(int(-1 * (event.delta / 220)), 'units')
+            else:
+                canvas.xview_scroll(int(-1 * (event.delta / 220)), 'units')
+        # Bind mouse wheel for horizontal scrolling
+        canvas.bind('<MouseWheel>', on_mousewheel)
+        canvas.bind('<Shift-MouseWheel>', on_mousewheel)
+
+
+
+        ############################################################################################################################
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
         # Headers
         headers = ["Process ID", "Arrival Time", "Burst Time"]
         if "Priority" in algo_details[0]:
@@ -328,4 +471,147 @@ btn.pack(pady=20)
 # Run the application
 window.mainloop()
 
+<<<<<<< HEAD
 print()
+=======
+print()
+
+
+
+
+
+# LARGEFONT =("Verdana", 35)
+  
+# class tkinterApp(Tk):
+     
+#     # __init__ function for class tkinterApp 
+#     def __init__(self): 
+         
+#         # __init__ function for class Tk
+#         Tk.__init__(self)
+         
+#         # creating a container
+#         container = Frame(self)  
+#         container.pack(side = "top", fill = "both", expand = True) 
+        
+#         container.grid_rowconfigure(0, weight = 1)
+#         container.grid_columnconfigure(0, weight = 1)
+#         Label(container,text="ahmed fares").grid(row = 1, column = 0, sticky ="nsew")
+
+  
+#         # initializing frames to an empty array
+#         self.frames = {}  
+  
+#         # iterating through a tuple consisting
+#         # of the different page layouts
+#         for F in (StartPage, Page1, Page2):
+  
+#             frame = F(container, self)
+#                    #frame(contain, prore)
+  
+#             # initializing frame of that object from
+#             # startpage, page1, page2 respectively with 
+#             # for loop
+#             self.frames[F] = frame 
+  
+#             frame.grid(row = 0, column = 0, sticky ="nsew")
+  
+#         self.show_frame(StartPage)
+  
+#     # to display the current frame passed as
+#     # parameter
+#     def show_frame(self, cont):
+#         frame = self.frames[cont]
+#         frame.tkraise()
+  
+# # first window frame startpage
+  
+# class StartPage(Frame):
+#     def __init__(self, parent, controller): 
+#         Frame.__init__(self, parent)
+         
+#         # label of frame Layout 2
+#         label =  Label(self, text ="Startpage", font = LARGEFONT)
+#         self.configure(bg="#FF0000")
+#         # putting the grid in its place by using
+#         # grid
+#         label.grid(row = 0, column = 4, padx = 10, pady = 10) 
+  
+#         button1 = Button(self, text ="Page 1",
+#         command = lambda : controller.show_frame(Page1))
+     
+#         # putting the button in its place by
+#         # using grid
+#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
+  
+#         ## button to show frame 2 with text layout2
+#         button2 =  Button(self, text ="Page 2",
+#         command = lambda : controller.show_frame(Page2))
+     
+#         # putting the button in its place by
+#         # using grid
+#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
+  
+          
+  
+  
+# # second window frame page1 
+# class Page1( Frame):
+     
+#     def __init__(self, parent, controller):
+         
+#         Frame.__init__(self, parent)
+#         label =  Label(self, text ="Page 1", font = LARGEFONT)
+#         label.grid(row = 0, column = 4, padx = 10, pady = 10)
+  
+#         # button to show frame 2 with text
+#         # layout2
+#         button1 = Button(self, text ="StartPage",
+#                             command = lambda : controller.show_frame(StartPage))
+     
+#         # putting the button in its place 
+#         # by using grid
+#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
+  
+#         # button to show frame 2 with text
+#         # layout2
+#         button2 = Button(self, text ="Page 2",
+#                             command = lambda : controller.show_frame(Page2))
+     
+#         # putting the button in its place by 
+#         # using grid
+#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
+  
+  
+  
+  
+# # third window frame page2
+# class Page2( Frame): 
+#     def __init__(self, parent, controller):
+#         Frame.__init__(self, parent)
+#         label = Label(self, text ="Page 2", font = LARGEFONT)
+#         label.grid(row = 0, column = 4, padx = 10, pady = 10)
+  
+#         # button to show frame 2 with text
+#         # layout2
+#         button1 = Button(self, text ="Page 1",
+#                             command = lambda : controller.show_frame(Page1))
+     
+#         # putting the button in its place by 
+#         # using grid
+#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
+  
+#         # button to show frame 3 with text
+#         # layout3
+#         button2 = Button(self, text ="Startpage",
+#                             command = lambda : controller.show_frame(StartPage))
+     
+#         # putting the button in its place by
+#         # using grid
+#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
+  
+  
+# # Driver Code
+# app = tkinterApp()
+# app.mainloop()
+>>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
