@@ -7,7 +7,7 @@ class Process:
         self.runs=runs if runs else []
         self.response_time=None
         self.waiting_time=None
-        self.turnaround_time=1
+        self.turnaround_time=None
             
     def __str__(self):
         return f'Process ID: {self.p_id}\nArrival Time: {self.arrival_time}\nBurst Time: {self.burst_time}\nPriority: {self.priority}\nRuns: {self.runs}\nResponse Time: {self.response_time}\nWaiting Time: {self.waiting_time}\nTurnaround Time: {self.turnaround_time}'
