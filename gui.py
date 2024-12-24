@@ -112,8 +112,8 @@ def create_window():
         process_frame.pack(padx=20, pady=10)
 
         ############################################################################################################################333
-        Sfactor=6
-        colors =["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]
+        Sfactor=1
+        colors =["#FD3B3B","#BFFD3B","#52FD3B","#3B62FD","#FD3BD2","#3BF9FD"]
 
         spacing_Frame=Frame(new_window,width=100,height=100)
         main_frame = Frame(new_window, bg="#FF0000",height=40,width=1000)
@@ -144,34 +144,34 @@ def create_window():
         # Add some sample labels
         sample_texts = [f"Label {i}" for i in range(1, 21)]
         labels = []
-        
+        print("--------->"+str(max(end_time for p in processes for start_time, end_time in p.runs)))
         kturn =-1
         chooosed="#D19B26"
         for i in range((max(end_time for p in processes for start_time, end_time in p.runs)+1)*Sfactor):
             if(kturn>i):
                 continue
             try:
-                for p in Algorithms(processes).sort_runtimes():
-                    if(i==p[1][0] *Sfactor   ):
+                for p in algo.sort_runtimes(processes):
+                    if(i==p[1][0] -1 ):
                         
                         chooosed=choice([m for m in colors if m!=chooosed])
                     # inner_frame.columnconfigure(i  ,weight=(p[1][1]-p[1][0])  *Sfactor )
-                        kturn=(p[1][1]+1)*Sfactor
-                        label = Label(inner_frame,width= (p[1][1]-p[1][0]) *Sfactor  ,
+                        kturn=(p[1][1]-1)
+                        label = Label(inner_frame,width= (p[1][1]-p[1][0])  ,
                                     background=chooosed,
-                                    height=2, text="p"+str(p[0]))
-                        inner_frame.columnconfigure(i     ,weight=(1+(p[1][1]-p[1][0])) *Sfactor  )
+                                    height=2, text=p[0])
+                        inner_frame.columnconfigure(i ,weight=((p[1][1]-p[1][0]))   )
                         label.grid(column=i   *Sfactor,row=0,sticky="ew")
                         labels.append(label)
                         
                         raise "asdfasdf"
                 
                 #inner_frame.columnconfigure(i  *Sfactor,weight=1*Sfactor    )
-                label = Label(inner_frame,width= (1)   *(Sfactor),
+                label = Label(inner_frame,width= (1)   ,
                                     background= "#FFFFFF",
                                     height=2, text="")
-                inner_frame.columnconfigure(i    ,weight=1   *(Sfactor) )
-                label.grid(column=i  *(Sfactor),row=0,sticky="ew")
+                inner_frame.columnconfigure(i    ,weight=1    )
+                label.grid(column=i  ,row=0,sticky="ew")
                 labels.append(label)
             except Exception:
                 continue
@@ -198,44 +198,44 @@ def create_window():
 
 
         ############################################################################################################################
-        #---------------------------------------------------------------------------->
-        game_frame = Frame(new_window)
-        game_frame.pack()
+        # #---------------------------------------------------------------------------->
+        # game_frame = Frame(new_window)
+        # game_frame.pack()
 
-        my_game = ttk.Treeview(game_frame)
+        # my_game = ttk.Treeview(game_frame)
 
-        my_game['columns'] = ('player_id', 'player_name', 'player_Rank', 'player_states', 'player_city')
+        # my_game['columns'] = ('P#', 'AT', 'BT', 'ST', 'CT','TAT','WT','RT')
 
-        my_game.column("P#", width=0,  stretch=ttk.NO)
-        my_game.column("AT",anchor=ttk.CENTER, width=80)
-        my_game.column("BT",anchor=ttk.CENTER,width=80)
-        my_game.column("ST",anchor=ttk.CENTER,width=80)
-        my_game.column("CT",anchor=ttk.CENTER,width=80)
-        my_game.column("TAT",anchor=ttk.CENTER,width=80)#
-        my_game.column("WT",anchor=ttk.CENTER,width=80)
-        my_game.column("RT",anchor=ttk.CENTER,width=80)
+        # my_game.column("P#", width=0,  stretch=ttk.NO)
+        # my_game.column("AT",anchor=ttk.CENTER, width=80)
+        # my_game.column("BT",anchor=ttk.CENTER,width=80)
+        # my_game.column("ST",anchor=ttk.CENTER,width=80)
+        # my_game.column("CT",anchor=ttk.CENTER,width=80)
+        # my_game.column("TAT",anchor=ttk.CENTER,width=80)
+        # my_game.column("WT",anchor=ttk.CENTER,width=80)
+        # my_game.column("RT",anchor=ttk.CENTER,width=80)
 
-        my_game.heading("P#",text="P#",anchor=ttk.CENTER)
-        my_game.heading("AT",text="AT",anchor=ttk.CENTER)
-        my_game.heading("BT",text="BT",anchor=ttk.CENTER)
-        my_game.heading("ST",text="ST",anchor=ttk.CENTER)
-        my_game.heading("CT",text="CT",anchor=ttk.CENTER)
-        my_game.heading("TAT",text="TAT",anchor=ttk.CENTER)
-        my_game.heading("WT",text="WT",anchor=ttk.CENTER)
-        my_game.heading("RT",text="RT",anchor=ttk.CENTER)
+        # my_game.heading("P#",text="P#",anchor=ttk.CENTER)
+        # my_game.heading("AT",text="AT",anchor=ttk.CENTER)
+        # my_game.heading("BT",text="BT",anchor=ttk.CENTER)
+        # my_game.heading("ST",text="ST",anchor=ttk.CENTER)
+        # my_game.heading("CT",text="CT",anchor=ttk.CENTER)
+        # my_game.heading("TAT",text="TAT",anchor=ttk.CENTER)
+        # my_game.heading("WT",text="WT",anchor=ttk.CENTER)
+        # my_game.heading("RT",text="RT",anchor=ttk.CENTER)
 
-        my_game.insert(parent='',index='end',iid=0,text='',
-        values=("P#","AT","BT","ST", "CT","TAT","WT","RT"))
-        # my_game.insert(parent='',index='end',iid=1,text='',
-        # values=('2','Ranger','102','Wisconsin', 'Green Bay'))
-        # my_game.insert(parent='',index='end',iid=2,text='',
-        # values=('3','Deamon','103', 'California', 'Placentia'))
-        # my_game.insert(parent='',index='end',iid=3,text='',
-        # values=('4','Dragon','104','New York' , 'White Plains'))
-        # my_game.insert(parent='',index='end',iid=4,text='',
-        # values=('5','CrissCross','105','California', 'San Diego'))
-        # my_game.insert(parent='',index='end',iid=5,text='',
-        # values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
+        # my_game.insert(parent='',index='end',iid=0,text='',
+        # values=("P#","AT","BT","ST", "CT","TAT","WT","RT"))
+        # # my_game.insert(parent='',index='end',iid=1,text='',
+        # # values=('2','Ranger','102','Wisconsin', 'Green Bay'))
+        # # my_game.insert(parent='',index='end',iid=2,text='',
+        # # values=('3','Deamon','103', 'California', 'Placentia'))
+        # # my_game.insert(parent='',index='end',iid=3,text='',
+        # # values=('4','Dragon','104','New York' , 'White Plains'))
+        # # my_game.insert(parent='',index='end',iid=4,text='',
+        # # values=('5','CrissCross','105','California', 'San Diego'))
+        # # my_game.insert(parent='',index='end',iid=5,text='',
+        # # values=('6','ZaqueriBlack','106','Wisconsin' , 'TONY'))
 
         my_game.pack()
         #---------------------------------------------------------------------------->
