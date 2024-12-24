@@ -289,7 +289,7 @@ def validate_integer_input(value):
         return True
     try:
         num = int(value)
-        return num >= 0
+        return num > 0
     except ValueError:
         return False
 
