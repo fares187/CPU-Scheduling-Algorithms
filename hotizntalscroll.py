@@ -11,17 +11,17 @@ processes = [
 ]
 print(Algorithms(processes).sort_runtimes())
 
-root = Tk()
-root.geometry("1000x600")
-root.title("Horizontal Scrollable Labels")
-root.columnconfigure(0,weight=1)
-root.rowconfigure(0,weight=1)
-root.rowconfigure(1,weight=1)
-root.rowconfigure(2,weight=1)
+new_window = Tk()
+new_window.geometry("1000x600")
+new_window.title("Horizontal Scrollable Labels")
+new_window.columnconfigure(0,weight=1)
+new_window.rowconfigure(0,weight=1)
+new_window.rowconfigure(1,weight=1)
+new_window.rowconfigure(2,weight=1)
 
-spacing_Frame=Frame(root,width=100,height=100)
-main_frame = Frame(root, bg="#FF0000",height=40)
-secondry_frame= Frame(root,bg="red")
+spacing_Frame=Frame(new_window,width=100,height=100)
+main_frame = Frame(new_window, bg="#FF0000",height=40)
+secondry_frame= Frame(new_window,bg="red")
 # Create main frame
 
 
@@ -146,4 +146,4 @@ canvas.bind('<Shift-MouseWheel>', on_mousewheel)
 
 
 
-root.mainloop()
+new_window.mainloop()
