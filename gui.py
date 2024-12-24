@@ -1,51 +1,9 @@
 from tkinter import Tk, Label, StringVar, OptionMenu, Button, Toplevel, Entry, Frame, PhotoImage, messagebox
 from algorithms import Algorithms
 from process import Process
-        
-def create_process_objects():
-    """Create a list of Process objects from the GUI input"""
-    processes = []
-    is_priority = "Priority" in selected_option.get()
-    
-    for i, row in enumerate(process_rows):
-        p_id = f"P{i+1}"
-        arrival_time = int(row[2].get())
-        burst_time = int(row[1].get())
-        
-        if is_priority:
-            priority = int(row[3].get())
-            process = Process(p_id, arrival_time, burst_time, priority)
-        else:
-            process = Process(p_id, arrival_time, burst_time)
-            
-        processes.append(process)
-    
-    return processes
-
-<<<<<<< HEAD
-def get_algorithm_details():
-    """Get algorithm name and quantum value if applicable"""
-    algo_name = selected_option.get()
-    if "Round Robin" in algo_name:
-        return [algo_name, int(quantum_entry.get())]
-    return [algo_name, None]
-
-=======
-from tkinter import Tk, Label, StringVar, OptionMenu, Button, Toplevel, Entry, Frame, PhotoImage, messagebox
 import tkinter as ttk
-from algorithms import Algorithms
 from random import randint, choice
-class Process:
-    def __init__(self, p_id, arrival_time, burst_time, priority=None):
-        self.p_id = p_id
-        self.arrival_time = arrival_time
-        self.burst_time = burst_time
-        self.priority = priority
-        self.runs = []
-        self.response_time = None
-        self.waiting_time = None
-        self.turnaround_time = None
-        
+
 def create_process_objects():
     """Create a list of Process objects from the GUI input"""
     processes = []
@@ -73,14 +31,12 @@ def get_algorithm_details():
         return [algo_name, int(quantum_entry.get())]
     return [algo_name, None]
 
->>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
 def create_window():
     if validate_inputs():
         # Create the tuple with algorithm details and process objects
         algo_details = get_algorithm_details()
         processes = create_process_objects()
-<<<<<<< HEAD
-
+        
         algo=Algorithms()
         match algo_details[0]:
             case "First Come First Served (FCFS)":
@@ -90,42 +46,117 @@ def create_window():
             case "Preemptive Shortest Job First (SJF)":
                 processes=algo.sjf_preemptive(processes)
             case "Round Robin (RR)":
-                processes=algo.round_robin(processes, algo_details[1])
+                processes=algo.roundRobin(processes, algo_details[1])
             case "Preemptive Priority Scheduling":
                 processes=algo.priority_non_preemptive(processes)
             case "Non-Preemptive Priority Scheduling":
                 processes=algo.premptive_priority(processes)
         
-        print(algo.sort_runtimes(processes))
-        
-=======
-        print(processes)
->>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
-        # Create new window to display the created objects
+        # Create new window
         new_window = Toplevel(window)
-        new_window.geometry("600x400")
+        new_window.geometry("800x600")
         new_window.title("Process Details")
-<<<<<<< HEAD
         
-=======
-       
->>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
-        # Display algorithm details
-        Label(new_window, text="Algorithm Details:", font=("Verdana", 16, "bold")).pack(pady=10)
-        Label(new_window, text=f"Algorithm: {algo_details[0]}", font=("Verdana", 12)).pack()
+        # Main container
+        main_frame = Frame(new_window)
+        main_frame.pack(fill='both', expand=True, padx=20, pady=10)
+        
+        # Algorithm Details Section
+        algo_frame = Frame(main_frame)
+        algo_frame.pack(fill='x', pady=(0, 20))
+        
+        Label(algo_frame, text="Algorithm Details", font=("Verdana", 16, "bold")).pack()
+        Label(algo_frame, text=f"Algorithm: {algo_details[0]}", font=("Verdana", 12)).pack()
         if algo_details[1]:
-            Label(new_window, text=f"Time Quantum: {algo_details[1]}", font=("Verdana", 12)).pack()
+            Label(algo_frame, text=f"Time Quantum: {algo_details[1]}", font=("Verdana", 12)).pack()
         
-        # Display process objects
-        Label(new_window, text="\nProcess Objects:", font=("Verdana", 16, "bold")).pack(pady=10)
-        process_frame = Frame(new_window)
-        process_frame.pack(padx=20, pady=10)
-<<<<<<< HEAD
+        # Process Table Section
+        table_frame = Frame(main_frame)
+        table_frame.pack(fill='x', pady=(0, 20))
         
-=======
+        Label(table_frame, text="Process Details", font=("Verdana", 16, "bold")).pack(pady=(0, 10))
+        
+        # Create table headers
+        headers = ["Process ID", "Arrival Time", "Burst Time"]
+        if "Priority" in algo_details[0]:
+            headers.extend(["Priority"])
+        headers.extend(["Turnaround Time", "Waiting Time", "Response Time"])
+        
+        # Table container with grid
+        grid_frame = Frame(table_frame)
+        grid_frame.pack(fill='x')
+        
+        # Style for headers and cells
+        header_style = ("Verdana", 10, "bold")
+        cell_style = ("Verdana", 10)
+        
+        # Add headers
+        for col, header in enumerate(headers):
+            Label(grid_frame, text=header, font=header_style, borderwidth=1, relief="solid", 
+                  width=15, padx=5, pady=5).grid(row=0, column=col, sticky="nsew")
+        
+        # Calculate averages while adding process data
+        total_turnaround = 0
+        total_waiting = 0
+        total_response = 0
+        
+        # Add process data
+        for row, process in enumerate(processes, start=1):
+            # Basic process info
+            Label(grid_frame, text=process.p_id, font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=0, sticky="nsew")
+            Label(grid_frame, text=str(process.arrival_time), font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=1, sticky="nsew")
+            Label(grid_frame, text=str(process.burst_time), font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=2, sticky="nsew")
+            
+            current_col = 3
+            
+            # Priority if applicable
+            if "Priority" in algo_details[0]:
+                Label(grid_frame, text=str(process.priority), font=cell_style, borderwidth=1, relief="solid",
+                      width=15, padx=5, pady=5).grid(row=row, column=current_col, sticky="nsew")
+                current_col += 1
+            
+            # Time metrics
+            Label(grid_frame, text=f"{process.turnaround_time:.2f}", font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=current_col, sticky="nsew")
+            Label(grid_frame, text=f"{process.waiting_time:.2f}", font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=current_col + 1, sticky="nsew")
+            Label(grid_frame, text=f"{process.response_time:.2f}", font=cell_style, borderwidth=1, relief="solid",
+                  width=15, padx=5, pady=5).grid(row=row, column=current_col + 2, sticky="nsew")
+            
+            # Add to totals
+            total_turnaround += process.turnaround_time
+            total_waiting += process.waiting_time
+            total_response += process.response_time
+        
+        # Configure grid columns to expand equally
+        for i in range(len(headers)):
+            grid_frame.grid_columnconfigure(i, weight=1)
+        
+        # Average Metrics Section
+        metrics_frame = Frame(main_frame)
+        metrics_frame.pack(fill='x', pady=(20, 0))
+        
+        Label(metrics_frame, text="Average Metrics", font=("Verdana", 16, "bold")).pack(pady=(0, 10))
+        
+        # Calculate and display averages
+        n = len(processes)
+        metrics_style = ("Verdana", 12)
+        Label(metrics_frame, 
+              text=f"Average Turnaround Time: {total_turnaround/n:.2f}", 
+              font=metrics_style).pack()
+        Label(metrics_frame, 
+              text=f"Average Waiting Time: {total_waiting/n:.2f}", 
+              font=metrics_style).pack()
+        Label(metrics_frame, 
+              text=f"Average Response Time: {total_response/n:.2f}", 
+              font=metrics_style).pack()
+        
         ############################################################################################################################333
-        Sfactor=6
-        colors =["#D1263D","#61D126","#44D126","#D19B26","#264ED1"]
+        Sfactor=1
+        colors =["#FD3B3B","#BFFD3B","#52FD3B","#3B62FD","#FD3BD2","#3BF9FD"]
 
         spacing_Frame=Frame(new_window,width=100,height=100)
         main_frame = Frame(new_window, bg="#FF0000",height=40,width=1000)
@@ -156,34 +187,34 @@ def create_window():
         # Add some sample labels
         sample_texts = [f"Label {i}" for i in range(1, 21)]
         labels = []
-        
+        print("--------->"+str(max(end_time for p in processes for start_time, end_time in p.runs)))
         kturn =-1
         chooosed="#D19B26"
         for i in range((max(end_time for p in processes for start_time, end_time in p.runs)+1)*Sfactor):
             if(kturn>i):
                 continue
             try:
-                for p in Algorithms(processes).sort_runtimes():
-                    if(i==p[1][0] *Sfactor   ):
+                for p in algo.sort_runtimes(processes):
+                    if(i==p[1][0] -1 ):
                         
                         chooosed=choice([m for m in colors if m!=chooosed])
                     # inner_frame.columnconfigure(i  ,weight=(p[1][1]-p[1][0])  *Sfactor )
-                        kturn=(p[1][1]+1)*Sfactor
-                        label = Label(inner_frame,width= (p[1][1]-p[1][0]) *Sfactor  ,
+                        kturn=(p[1][1]-1)
+                        label = Label(inner_frame,width= (p[1][1]-p[1][0])  ,
                                     background=chooosed,
-                                    height=2, text="p"+str(p[0]))
-                        inner_frame.columnconfigure(i     ,weight=(1+(p[1][1]-p[1][0])) *Sfactor  )
+                                    height=2, text=p[0])
+                        inner_frame.columnconfigure(i ,weight=((p[1][1]-p[1][0]))   )
                         label.grid(column=i   *Sfactor,row=0,sticky="ew")
                         labels.append(label)
                         
                         raise "asdfasdf"
                 
                 #inner_frame.columnconfigure(i  *Sfactor,weight=1*Sfactor    )
-                label = Label(inner_frame,width= (1)   *(Sfactor),
+                label = Label(inner_frame,width= (1)   ,
                                     background= "#FFFFFF",
                                     height=2, text="")
-                inner_frame.columnconfigure(i    ,weight=1   *(Sfactor) )
-                label.grid(column=i  *(Sfactor),row=0,sticky="ew")
+                inner_frame.columnconfigure(i    ,weight=1    )
+                label.grid(column=i  ,row=0,sticky="ew")
                 labels.append(label)
             except Exception:
                 continue
@@ -206,27 +237,7 @@ def create_window():
         # Bind mouse wheel for horizontal scrolling
         canvas.bind('<MouseWheel>', on_mousewheel)
         canvas.bind('<Shift-MouseWheel>', on_mousewheel)
-
-
-
-        ############################################################################################################################
->>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
-        # Headers
-        headers = ["Process ID", "Arrival Time", "Burst Time"]
-        if "Priority" in algo_details[0]:
-            headers.append("Priority")
-            
-        for col, header in enumerate(headers):
-            Label(process_frame, text=header, font=("Verdana", 12, "bold")).grid(row=0, column=col, padx=10, pady=5)
         
-        # Process details
-        for row, process in enumerate(processes, start=1):
-            Label(process_frame, text=process.p_id).grid(row=row, column=0, padx=10, pady=2)
-            Label(process_frame, text=str(process.arrival_time)).grid(row=row, column=1, padx=10, pady=2)
-            Label(process_frame, text=str(process.burst_time)).grid(row=row, column=2, padx=10, pady=2)
-            if process.priority is not None:
-                Label(process_frame, text=str(process.priority)).grid(row=row, column=3, padx=10, pady=2)
-      
 # Main window setup remains the same
 window = Tk()
 window.geometry("1000x600")
@@ -471,147 +482,4 @@ btn.pack(pady=20)
 # Run the application
 window.mainloop()
 
-<<<<<<< HEAD
 print()
-=======
-print()
-
-
-
-
-
-# LARGEFONT =("Verdana", 35)
-  
-# class tkinterApp(Tk):
-     
-#     # __init__ function for class tkinterApp 
-#     def __init__(self): 
-         
-#         # __init__ function for class Tk
-#         Tk.__init__(self)
-         
-#         # creating a container
-#         container = Frame(self)  
-#         container.pack(side = "top", fill = "both", expand = True) 
-        
-#         container.grid_rowconfigure(0, weight = 1)
-#         container.grid_columnconfigure(0, weight = 1)
-#         Label(container,text="ahmed fares").grid(row = 1, column = 0, sticky ="nsew")
-
-  
-#         # initializing frames to an empty array
-#         self.frames = {}  
-  
-#         # iterating through a tuple consisting
-#         # of the different page layouts
-#         for F in (StartPage, Page1, Page2):
-  
-#             frame = F(container, self)
-#                    #frame(contain, prore)
-  
-#             # initializing frame of that object from
-#             # startpage, page1, page2 respectively with 
-#             # for loop
-#             self.frames[F] = frame 
-  
-#             frame.grid(row = 0, column = 0, sticky ="nsew")
-  
-#         self.show_frame(StartPage)
-  
-#     # to display the current frame passed as
-#     # parameter
-#     def show_frame(self, cont):
-#         frame = self.frames[cont]
-#         frame.tkraise()
-  
-# # first window frame startpage
-  
-# class StartPage(Frame):
-#     def __init__(self, parent, controller): 
-#         Frame.__init__(self, parent)
-         
-#         # label of frame Layout 2
-#         label =  Label(self, text ="Startpage", font = LARGEFONT)
-#         self.configure(bg="#FF0000")
-#         # putting the grid in its place by using
-#         # grid
-#         label.grid(row = 0, column = 4, padx = 10, pady = 10) 
-  
-#         button1 = Button(self, text ="Page 1",
-#         command = lambda : controller.show_frame(Page1))
-     
-#         # putting the button in its place by
-#         # using grid
-#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
-  
-#         ## button to show frame 2 with text layout2
-#         button2 =  Button(self, text ="Page 2",
-#         command = lambda : controller.show_frame(Page2))
-     
-#         # putting the button in its place by
-#         # using grid
-#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
-  
-          
-  
-  
-# # second window frame page1 
-# class Page1( Frame):
-     
-#     def __init__(self, parent, controller):
-         
-#         Frame.__init__(self, parent)
-#         label =  Label(self, text ="Page 1", font = LARGEFONT)
-#         label.grid(row = 0, column = 4, padx = 10, pady = 10)
-  
-#         # button to show frame 2 with text
-#         # layout2
-#         button1 = Button(self, text ="StartPage",
-#                             command = lambda : controller.show_frame(StartPage))
-     
-#         # putting the button in its place 
-#         # by using grid
-#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
-  
-#         # button to show frame 2 with text
-#         # layout2
-#         button2 = Button(self, text ="Page 2",
-#                             command = lambda : controller.show_frame(Page2))
-     
-#         # putting the button in its place by 
-#         # using grid
-#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
-  
-  
-  
-  
-# # third window frame page2
-# class Page2( Frame): 
-#     def __init__(self, parent, controller):
-#         Frame.__init__(self, parent)
-#         label = Label(self, text ="Page 2", font = LARGEFONT)
-#         label.grid(row = 0, column = 4, padx = 10, pady = 10)
-  
-#         # button to show frame 2 with text
-#         # layout2
-#         button1 = Button(self, text ="Page 1",
-#                             command = lambda : controller.show_frame(Page1))
-     
-#         # putting the button in its place by 
-#         # using grid
-#         button1.grid(row = 1, column = 1, padx = 10, pady = 10)
-  
-#         # button to show frame 3 with text
-#         # layout3
-#         button2 = Button(self, text ="Startpage",
-#                             command = lambda : controller.show_frame(StartPage))
-     
-#         # putting the button in its place by
-#         # using grid
-#         button2.grid(row = 2, column = 1, padx = 10, pady = 10)
-  
-  
-# # Driver Code
-# app = tkinterApp()
-# app.mainloop()
->>>>>>> 653213cd8cd77cd818d6656b9c027788bfadfff1
