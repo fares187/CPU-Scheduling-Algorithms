@@ -47,14 +47,14 @@ def create_window():
                 processes=algo.sjf_preemptive(processes)
             case "Round Robin (RR)":
                 processes=algo.roundRobin(processes, algo_details[1])
-            case "Preemptive Priority Scheduling":
-                processes=algo.premptive_priority(processes)
             case "Non-Preemptive Priority Scheduling":
                 processes=algo.priority_non_preemptive(processes)
+            case "Preemptive Priority Scheduling":
+                processes=algo.premptive_priority(processes)     
         
         # Create new window
         new_window = Toplevel(window)
-        new_window.geometry("800x600")
+        new_window.geometry("1000x600")
         new_window.title("Process Details")
         
         # Main container
@@ -145,13 +145,13 @@ def create_window():
         n = len(processes)
         metrics_style = ("Verdana", 12)
         Label(metrics_frame, 
-              text=f"Average Turnaround Time: {total_turnaround/n:.2f}", 
+              text=f"Average Turnaround Time: {total_turnaround/n:.2f}s", 
               font=metrics_style).pack()
         Label(metrics_frame, 
-              text=f"Average Waiting Time: {total_waiting/n:.2f}", 
+              text=f"Average Waiting Time: {total_waiting/n:.2f}s", 
               font=metrics_style).pack()
         Label(metrics_frame, 
-              text=f"Average Response Time: {total_response/n:.2f}", 
+              text=f"Average Response Time: {total_response/n:.2f}s", 
               font=metrics_style).pack()
         
         ############################################################################################################################333
@@ -254,8 +254,8 @@ options = [
     "Non-Preemptive Shortest Job First (SJF)",
     "Preemptive Shortest Job First (SJF)",
     "Round Robin (RR)",
-    "Preemptive Priority Scheduling",
-    "Non-Preemptive Priority Scheduling"
+    "Non-Preemptive Priority Scheduling",
+    "Preemptive Priority Scheduling"
 ]
 
 dropdown = OptionMenu(window, selected_option, *options)

@@ -9,7 +9,7 @@ class Algorithms:
     def fcfs(self, processes):
         # Sort processes based on arrival time to ensure FCFS order
         processes.sort(key=lambda x: x.arrival_time)
-        current_time = 0
+        current_time = 1
 
         for process in processes:
             # If the CPU is idle, move the current time to the process's arrival time
@@ -157,7 +157,7 @@ class Algorithms:
         it = 1
         ls = []
         for i in processes_ls:
-            i.sb = i.arrival_time
+            i.sb = i.burst_time
 
         while (len(processes_ls) != 0):
             p = processes_ls.pop(0)
@@ -191,7 +191,7 @@ class Algorithms:
         # Sort processes by arrival time initially
         processes.sort(key=lambda x: (x.arrival_time, x.priority if x.priority is not None else float('inf')))
         
-        current_time = 0
+        current_time = 1
         scheduled_processes = []
         
         while processes:
@@ -223,7 +223,7 @@ class Algorithms:
         # Sort  by arrival time
         process_list.sort(key=lambda process: process.arrival_time)
         # Current time
-        t = 0  
+        t = 1
         available_process = []  
         completed_processes = []  
         # loop until one list is empty
