@@ -162,8 +162,8 @@ class Algorithms:
         while (len(processes_ls) != 0):
             p = processes_ls.pop(0)
             if (p.arrival_time <= it):
-                if (len(p.runs) != 0):
-                    it = p.runs[-1][-1]
+                # if (len(p.runs) != 0):
+                #     it = p.runs[-1][-1]
 
                 if (p.burst_time > qt):
                     p.burst_time -= qt
