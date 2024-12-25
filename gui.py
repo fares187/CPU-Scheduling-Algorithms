@@ -48,9 +48,9 @@ def create_window():
             case "Round Robin (RR)":
                 processes=algo.roundRobin(processes, algo_details[1])
             case "Preemptive Priority Scheduling":
-                processes=algo.priority_non_preemptive(processes)
-            case "Non-Preemptive Priority Scheduling":
                 processes=algo.premptive_priority(processes)
+            case "Non-Preemptive Priority Scheduling":
+                processes=algo.priority_non_preemptive(processes)
         
         # Create new window
         new_window = Toplevel(window)

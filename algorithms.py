@@ -154,10 +154,10 @@ class Algorithms:
     
     
     def roundRobin(self, processes_ls:list[Process], qt:int):
-        it = 0
+        it = 1
         ls = []
         for i in processes_ls:
-            i.sb = i.burst_time
+            i.sb = i.arrival_time
 
         while (len(processes_ls) != 0):
             p = processes_ls.pop(0)
