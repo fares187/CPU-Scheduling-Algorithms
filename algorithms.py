@@ -1,5 +1,5 @@
 from process import *
-
+import copy
 from process import Process
 
 class Algorithms:
@@ -9,7 +9,7 @@ class Algorithms:
     def fcfs(self, processes):
         # Sort processes based on arrival time to ensure FCFS order
         processes.sort(key=lambda x: x.arrival_time)
-        current_time = 1
+        current_time = 0
 
         for process in processes:
             # If the CPU is idle, move the current time to the process's arrival time
@@ -154,7 +154,7 @@ class Algorithms:
     
     
     def roundRobin(self, processes_ls:list[Process], qt:int):
-        it = 1
+        it = 0
         ls = []
         for i in processes_ls:
             i.sb = i.burst_time
@@ -189,9 +189,9 @@ class Algorithms:
 
     def priority_non_preemptive(self, processes: list):
         # Sort processes by arrival time initially
-        processes.sort(key=lambda x: (x.arrival_time, x.priority if x.priority is not None else float('inf')))
+        #processes.sort(key=lambda x: (x.arrival_time, x.priority if x.priority is not None else float('inf')))
         
-        current_time = 1
+        current_time = 0
         scheduled_processes = []
         
         while processes:
@@ -222,8 +222,9 @@ class Algorithms:
     def premptive_priority(self, process_list):
         # Sort  by arrival time
         process_list.sort(key=lambda process: process.arrival_time)
+        new_list = copy.deepcopy(process_list)
         # Current time
-        t = 1
+        t = 0
         available_process = []  
         completed_processes = []  
         # loop until one list is empty
@@ -234,11 +235,12 @@ class Algorithms:
                 available_process.append(process_list.pop(0))
             #check if the list has any process
             if available_process:
+                
                 # Sort processes by priority
                 available_process.sort(key=lambda process: process.priority)
                 ## store the process with highest priority into a local variable
                 current_process = available_process[0]
-
+                #mainburst = current_process.burst_time
                 # record the working interval the process worked
                 if not current_process.runs or current_process.runs[-1][1] != t:
                     # Start a new interval
@@ -262,7 +264,7 @@ class Algorithms:
                     current_process.waiting_time = current_process.turnaround_time - sum(
                         run[1] - run[0] for run in current_process.runs
                     )
-                    
+                    current_process.burst_time=[s for s in new_list if s.p_id == current_process.p_id][0].burst_time
                     completed_processes.append(current_process)
             else:
                 pass

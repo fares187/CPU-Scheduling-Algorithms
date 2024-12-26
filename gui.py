@@ -194,11 +194,11 @@ def create_window():
                 continue
             try:
                 for p in algo.sort_runtimes(processes):
-                    if(i==p[1][0] -1 ):
+                    if(i==p[1][0] ):
                         
                         chooosed=choice([m for m in colors if m!=chooosed])
                     # inner_frame.columnconfigure(i  ,weight=(p[1][1]-p[1][0])  *Sfactor )
-                        kturn=(p[1][1]-1)
+                        kturn=(p[1][1])
                         label = Label(inner_frame,width= (p[1][1]-p[1][0])  ,
                                     background=chooosed,
                                     height=2, text=p[0])
@@ -289,7 +289,7 @@ def validate_integer_input(value):
         return True
     try:
         num = int(value)
-        return num > 0
+        return num >= 0
     except ValueError:
         return False
 
