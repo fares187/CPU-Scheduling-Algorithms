@@ -7,81 +7,68 @@ class Algorithms:
         pass
     
     def fcfs(self, processes):
-        # Sort processes based on arrival time to ensure FCFS order
+        
         processes.sort(key=lambda x: x.arrival_time)
         current_time = 0
 
         for process in processes:
-            # If the CPU is idle, move the current time to the process's arrival time
+            
             if current_time < process.arrival_time:
                 current_time = process.arrival_time
 
-            # Record the start and end times for the process
+            
             start_time = current_time
             end_time = current_time + process.burst_time
 
-            # Update the process's run intervals
+            
             process.runs.append([start_time, end_time])
-            current_time = end_time  # Advance the current time to the process's end time
+            current_time = end_time 
 
-            # Calculate performance metrics
-            process.response_time = start_time - process.arrival_time  # Time from arrival to the start of execution
-            process.turnaround_time = end_time - process.arrival_time  # Total time from arrival to completion
-            process.waiting_time = process.turnaround_time - process.burst_time  # Time spent waiting in the ready queue
+        
+            process.response_time = start_time - process.arrival_time  
+            process.turnaround_time = end_time - process.arrival_time  
+            process.waiting_time = process.turnaround_time - process.burst_time  
 
-        # Return the list of processes with updated metrics
+        
         return processes
 
     def sjf_preemptive(self, process_list: list):
-        # Gantt_Chart list
+    
         gantt_chart = []
-    
-        # dictionary holds the time when each process was executed
-        time_intervals = {}    
-    
-        # define a dictionary containing a completed processes
+        time_intervals = {}        
         completed_process = {}
-    
-        # define a dictionary containing burst times of the processes to save them
         initial_burst_times = {}
+        
         for p in process_list:
             initial_burst_times[p.p_id] = p.burst_time
         
-        # initial time (first arrival time)
         t = sorted(process_list, key=lambda process: process.arrival_time)[0].arrival_time
            
         while len(process_list) != 0:
-            # available processes in a specified time
+            
             available = []
     
             for p in process_list:
                 if p.arrival_time <= t:
                     available.append(p)
-    
-            # update the time in each iteration
             t += 1
             
             if len(available) != 0:
-                # sort the available processes by the burst_time
                 available.sort(key=lambda process: process.burst_time)
                 process = available[0]
                 gantt_chart.append(process.p_id)
                 process_list.remove(process)
                 
-                # updating the burst time of the process
                 process.burst_time -= 1
     
-                # create a key for each process_id (if not already exist) and assign it an empty list 
                 if process.p_id not in time_intervals:
                     time_intervals[process.p_id] = []
     
-                # append this time to the list for a specified p_id
                 time_intervals[process.p_id].append(t-1)
                 
                 if process.burst_time == 0:
                     process.burst_time = initial_burst_times[process.p_id]
-                    
-                    # Completion Time
+            
                     CT = t
     
                     # Turnaround Time
@@ -188,79 +175,60 @@ class Algorithms:
         return ls
 
     def priority_non_preemptive(self, processes: list):
-        # Sort processes by arrival time initially
         #processes.sort(key=lambda x: (x.arrival_time, x.priority if x.priority is not None else float('inf')))
         
         current_time = 0
         scheduled_processes = []
         
         while processes:
-            # Filter available processes (arrived and not yet scheduled)
+
             available_processes = [p for p in processes if p.arrival_time <= current_time]
-            if not available_processes:  # If no process is available, move time forward
+            if not available_processes:  
                 current_time = processes[0].arrival_time
                 continue
             
-            # Select the process with the highest priority (lowest priority value)
             selected_process = min(available_processes, key=lambda x: x.priority if x.priority is not None else float('inf'))
             
-            # Calculate timings
             selected_process.runs.append([current_time, current_time + selected_process.burst_time])
             selected_process.response_time = current_time - selected_process.arrival_time
             selected_process.waiting_time = current_time - selected_process.arrival_time
             selected_process.turnaround_time = selected_process.waiting_time + selected_process.burst_time
             
-            # Update current time
             current_time += selected_process.burst_time
             
-            # Add to scheduled list and remove from processes
             scheduled_processes.append(selected_process)
             processes.remove(selected_process)
         
         return scheduled_processes
     
     def premptive_priority(self, process_list):
-        # Sort  by arrival time
+
         process_list.sort(key=lambda process: process.arrival_time)
         new_list = copy.deepcopy(process_list)
-        # Current time
         t = 0
         available_process = []  
         completed_processes = []  
-        # loop until one list is empty
         while process_list or available_process:
-            # Add new processes to the ready queue
             while process_list and process_list[0].arrival_time <= t:
-                #pop the process from the process list to available process
                 available_process.append(process_list.pop(0))
-            #check if the list has any process
             if available_process:
                 
-                # Sort processes by priority
                 available_process.sort(key=lambda process: process.priority)
-                ## store the process with highest priority into a local variable
                 current_process = available_process[0]
                 #mainburst = current_process.burst_time
-                # record the working interval the process worked
                 if not current_process.runs or current_process.runs[-1][1] != t:
-                    # Start a new interval
                     current_process.runs.append([t, t + 1]) 
                 else:
-                    # Extend interval by one 
                     current_process.runs[-1][1] += 1  
 
-                #minus from the burst time 1 
                 current_process.burst_time -= 1
 
-                # check if the process finished
                 if current_process.burst_time == 0:
-                    ## remove the process from the available and append to completed one
                     available_process.remove(current_process)
-                    # the time that the process ended
                     computation_time = t + 1
-                    # calc TAT
+                
                     current_process.turnaround_time = computation_time - current_process.arrival_time
-                    #calc WT
+                    
                     current_process.waiting_time = current_process.turnaround_time - sum(
                         run[1] - run[0] for run in current_process.runs
                     )
@@ -273,7 +241,7 @@ class Algorithms:
         # calc RT
         for process in completed_processes:
             process.response_time = process.runs[0][0] - process.arrival_time
-        # return the chart and the chart
+       
         return completed_processes
 
     def sort_runtimes(self, processes: list):
