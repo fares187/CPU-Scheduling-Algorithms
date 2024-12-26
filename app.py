@@ -239,7 +239,7 @@ window.geometry("1000x600")
 window.title("OS CPU")
 
 # Set window icon
-icon = PhotoImage(file="/home/muhammed_mahmoud/python_projects/My_GitHub/CPU-Scheduling-Algorithms/image.png")
+icon = PhotoImage(file="image.png")
 window.iconphoto(True, icon)
 
 # Add title label
