@@ -2,6 +2,12 @@
 
 This project is a simulation tool for various CPU scheduling algorithms, developed as a final project for the Operating Systems course. It provides a graphical user interface (GUI) to facilitate the visualization and analysis of different scheduling strategies.
 
+
+
+https://github.com/user-attachments/assets/20f41c80-f47c-4958-a747-f1ef60dd7c0d
+
+
+
 ## Table of Contents
 
 - [Overview](#overview)
